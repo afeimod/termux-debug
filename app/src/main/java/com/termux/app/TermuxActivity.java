@@ -216,6 +216,9 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
 
         setContentView(R.layout.activity_termux);
 
+        //尝试绘制悬浮窗
+        createOverlayView();
+
         // Load termux shared preferences
         // This will also fail if TermuxConstants.TERMUX_PACKAGE_NAME does not equal applicationId
         mPreferences = TermuxAppSharedPreferences.build(this, true);
@@ -1019,6 +1022,22 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
         Intent intent = new Intent(context, TermuxActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
+    }
+
+    private void createOverlayView() {
+        if(!android.provider.Settings.canDrawOverlays(this)){
+            startActivity(new Intent( "android.settings.action.MANAGE_OVERLAY_PERMISSION",  android.net.Uri.parse("package:" + getPackageName())));
+            return;
+        }
+        WindowManager windowManager = getSystemService(WindowManager.class);
+
+        //操作面板
+        android.widget.TextView textView = new android.widget.TextView(this);
+        textView.setText("测试Overlay");
+        textView.setBackgroundColor( android.graphics.Color.RED);
+        android.view.WindowManager.LayoutParams rootParams = new android.view.WindowManager.LayoutParams(-2, -2, 2038, 32 | 8, 1);//TYPE_APPLICATION_OVERLAY, FLAG_NOT_TOUCH_MODAL | FLAG_NOT_FOCUSABLE, RGBA_8888);
+        rootParams.gravity = android.view.Gravity.START | android.view.Gravity.TOP;
+        windowManager.addView(textView, rootParams);
     }
 
 }

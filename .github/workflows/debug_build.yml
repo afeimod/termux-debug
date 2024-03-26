@@ -4,10 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
+      - create-overlay-for-termux-x11
 
 jobs:
   build:

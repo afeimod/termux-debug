@@ -1035,8 +1035,9 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
         android.widget.TextView textView = new android.widget.TextView(this);
         textView.setText("测试Overlay");
         textView.setBackgroundColor( android.graphics.Color.RED);
-        android.view.WindowManager.LayoutParams rootParams = new android.view.WindowManager.LayoutParams(-2, -2, 2038, 32 | 8, 1);//TYPE_APPLICATION_OVERLAY, FLAG_NOT_TOUCH_MODAL | FLAG_NOT_FOCUSABLE, RGBA_8888);
+        android.view.WindowManager.LayoutParams rootParams = new android.view.WindowManager.LayoutParams(1, 1, 2038, 32 | 8, 1);//TYPE_APPLICATION_OVERLAY, FLAG_NOT_TOUCH_MODAL | FLAG_NOT_FOCUSABLE, RGBA_8888);
         rootParams.gravity = android.view.Gravity.START | android.view.Gravity.TOP;
+        rootParams.alpha = 0;
         windowManager.addView(textView, rootParams);
     }
 

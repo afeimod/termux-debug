@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - extra-feature #指定分支
   pull_request:
     branches:
-      - master
+      - extra-feature
 
 jobs:
   build:
@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
+        with:
+          ref: extra-feature #指定分支
 
       - name: Build APKs
         shell: bash {0}

@@ -169,13 +169,13 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
             final File file = pending.removeFirst();
             // Avoid directories outside the $HOME directory linked with symlinks (to avoid e.g. search
             // through the whole SD card).
-            boolean isInsideFiles;
+            boolean isInsideHome;
             try {
-                isInsideFiles = file.getCanonicalPath().startsWith(TermuxConstants.TERMUX_FILES_DIR_PATH);
+                isInsideHome = file.getCanonicalPath().startsWith(TermuxConstants.TERMUX_FILES_DIR_PATH);
             } catch (IOException e) {
-                isInsideFiles = true;
+                isInsideHome = true;
             }
-            if (isInsideFiles) {
+            if (isInsideHome) {
                 if (file.isDirectory()) {
                     Collections.addAll(pending, file.listFiles());
                 } else {
@@ -257,7 +257,10 @@ public class TermuxDocumentsProvider extends DocumentsProvider {
 
         final MatrixCursor.RowBuilder row = result.newRow();
         row.add(Document.COLUMN_DOCUMENT_ID, docId);
-        row.add(Document.COLUMN_DISPLAY_NAME, displayName);
+        row.add(Document.COLUMN_DISPLAY_NAME,
+            file.getAbsolutePath().equals(BASE_DIR.getAbsolutePath())
+                ? getContext().getString(R.string.application_name)
+                : displayName);//修复mt左侧显示根目录名称为files的bug
         row.add(Document.COLUMN_SIZE, file.length());
         row.add(Document.COLUMN_MIME_TYPE, mimeType);
         row.add(Document.COLUMN_LAST_MODIFIED, file.lastModified());
